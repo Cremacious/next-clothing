@@ -8,21 +8,21 @@ import { signInWithCredentials } from '@/lib/actions/user.actions';
 import { useFormStatus } from 'react-dom';
 import { useActionState } from 'react';
 
-
 const CredentialsSigninForm = () => {
-
   const [data, action] = useActionState(signInWithCredentials, {
     success: false,
-    message: ''
-  })
+    message: '',
+  });
 
-  const signInButton = () => {
-    const {pending} = useFormStatus()
+  const SignInButton = () => {
+    const { pending } = useFormStatus();
 
     return (
-      <Button disabled={pending} className='text-center'>bb</Button>
-    )
-  }
+      <Button variant="default" disabled={pending} className="w-full">
+        {pending ? 'Signing in...' : 'Sign In'}
+      </Button>
+    );
+  };
 
   return (
     <form action={action} className="">
@@ -47,17 +47,13 @@ const CredentialsSigninForm = () => {
             required
           />
         </div>
-        <Button variant="default" className="w-full">
-          Sign In
-        </Button>
+        <SignInButton />
 
         {data && !data.success && (
-          <div className="text-center text-md">
-            {data.message}
-          </div>
+          <div className="text-center text-red-500">{data.message}</div>
         )}
         <div className="text-center text-sm text-muted-foreground">
-          Don&apos;t have an account? {' '}
+          Don&apos;t have an account?{' '}
           <Link href="/sign-up" target="_self" className="link">
             Sign Up
           </Link>
