@@ -39,7 +39,6 @@ const SignUpForm = () => {
             name="name"
             type="text"
             autoComplete="name"
-            required
           />
         </div>
         <div>
@@ -49,7 +48,7 @@ const SignUpForm = () => {
             name="email"
             type="text"
             autoComplete="email"
-            required
+        
           />
         </div>
         <div>
