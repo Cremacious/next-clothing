@@ -28,14 +28,16 @@ const AddToCart = ({ item }: { item: CartItem }) => {
           altText="Go To Cart"
           className="bg-primary text-white hover:bg-gray-800"
           onClick={() => router.push('/cart')}
-        >Go To Cart</ToastAction>
+        >
+          Go To Cart
+        </ToastAction>
       ),
     });
   };
 
   return (
     <Button className="w-full" type="button" onClick={handleAddToCart}>
-      Add to cart
+      <Plus /> Add to cart
     </Button>
   );
 };
