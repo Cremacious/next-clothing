@@ -22,7 +22,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
     }
 
     toast({
-      description: `${item.name} added to cart`,
+      description: res.message,
       action: (
         <ToastAction
           altText="Go To Cart"
