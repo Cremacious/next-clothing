@@ -72,8 +72,6 @@ export async function addItemToCart(data: CartItem) {
         }
         cart.items.push(item);
       }
-
-      // save to db
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
