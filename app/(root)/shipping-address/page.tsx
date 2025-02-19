@@ -4,26 +4,30 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { ShippingAddress } from '@/types';
 import { getUserById } from '@/lib/actions/user.actions';
+import ShippingAddressForm from './shipping-address-form';
 
 export const metadata = {
   title: 'Shipping Address',
 };
 
 const ShippingAddressPage = async () => {
+  const cart = await getMyCart();
 
-    const cart = await getMyCart();
+  if (!cart || cart.items.length === 0) {
+    redirect('/cart');
+  }
+  const session = await auth();
+  const userId = session?.user?.id;
 
-    if (!cart || cart.items.length === 0) {
-        redirect('/cart');
-    }
-    const session = await auth();
-    const userId = session?.user?.id
+  if (!userId) throw new Error('User not found');
 
-    if (!userId) throw new Error('User not found');
+  const user = await getUserById(userId);
 
-    const user = await getUserById(userId);
-    
-  return <>Shipping address page</>;
+  return (
+    <>
+      <ShippingAddressForm address={user.address as ShippingAddress}/>
+    </>
+  );
 };
 
 export default ShippingAddressPage;
