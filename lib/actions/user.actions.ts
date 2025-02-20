@@ -89,11 +89,12 @@ export async function updateUserAddress(data: ShippingAddress) {
     const address = shippingAddressSchema.parse(data);
     await prisma.user.update({
       where: { id: currentUser.id },
-      data: address,
+      data: {address},
     });
 
     return { success: true, message: 'Address updated successfully' };
   } catch (error) {
+    console.log('Here 1');
     return { success: false, message: formatError(error) };
   }
 }

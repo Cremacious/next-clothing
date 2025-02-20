@@ -34,8 +34,10 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 
   const onSubmit:SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (values) => {
     startTransition(async () => {
+      console.log('Here 3');
       const res = await updateUserAddress(values)
       if (!res.success) {
+        console.log('Here 2');
         toast({
           variant: 'destructive',
           description: res.message
