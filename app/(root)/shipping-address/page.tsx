@@ -14,6 +14,8 @@ export const metadata = {
 const ShippingAddressPage = async () => {
   const cart = await getMyCart();
 
+  const deletethis = 'delete this';
+
   if (!cart || cart.items.length === 0) {
     redirect('/cart');
   }
@@ -33,3 +35,6 @@ const ShippingAddressPage = async () => {
 };
 
 export default ShippingAddressPage;
+
+
+//edit this
