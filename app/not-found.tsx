@@ -2,7 +2,7 @@ import { APP_NAME } from '@/lib/constants';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
-const PageNotFound = () => {
+const NotFoundPage = () => {
   return (
     <div className="flex-col flex items-center justify-center min-h-screen">
       <Image
@@ -30,4 +30,4 @@ const PageNotFound = () => {
   );
 };
 
-export default PageNotFound;
+export default NotFoundPage;
