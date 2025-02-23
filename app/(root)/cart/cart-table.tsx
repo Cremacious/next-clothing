@@ -17,12 +17,9 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { formatCurrency } from '@/lib/utils';
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
 } from '@/components/ui/card';
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
