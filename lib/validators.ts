@@ -92,6 +92,7 @@ export const insertOrderSchema = z.object({
     message: 'Invalid Payment Method',
   }),
   shippingAddress: shippingAddressSchema,
+  paymentResult: z.object({}).optional(),
 });
 
 export const insertOrderItemSchema = z.object({

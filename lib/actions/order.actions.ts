@@ -8,7 +8,6 @@ import { insertOrderSchema } from '../validators';
 import { prisma } from '@/db/prisma';
 import { CartItem } from '@/types';
 
-
 export async function createOrder() {
   try {
     const session = await auth();
@@ -37,13 +36,14 @@ export async function createOrder() {
     }
 
     if (!user.paymentMethod) {
+      console.log('111');
       return {
         success: false,
         message: 'No payment method',
         redirectTo: '/payment-method',
       };
     }
-
+    console.log('0');
     // Create order object
     const order = insertOrderSchema.parse({
       userId: user.id,
@@ -53,6 +53,7 @@ export async function createOrder() {
       shippingPrice: cart.shippingPrice,
       taxPrice: cart.taxPrice,
       totalPrice: cart.totalPrice,
+      paymentResult: {},
     });
 
     // Create a transaction to create order and order items in database
@@ -68,7 +69,9 @@ export async function createOrder() {
             orderId: insertedOrder.id,
           },
         });
+        console.log('1');
       }
+      console.log('2');
       // Clear cart
       await tx.cart.update({
         where: { id: cart.id },
@@ -80,7 +83,7 @@ export async function createOrder() {
           itemsPrice: 0,
         },
       });
-
+      console.log('4');
       return insertedOrder.id;
     });
 
