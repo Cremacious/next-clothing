@@ -43,7 +43,7 @@ export async function createOrder() {
         redirectTo: '/payment-method',
       };
     }
-    console.log('0');
+
     // Create order object
     const order = insertOrderSchema.parse({
       userId: user.id,
@@ -69,9 +69,9 @@ export async function createOrder() {
             orderId: insertedOrder.id,
           },
         });
-        console.log('1');
+    
       }
-      console.log('2');
+ 
       // Clear cart
       await tx.cart.update({
         where: { id: cart.id },
