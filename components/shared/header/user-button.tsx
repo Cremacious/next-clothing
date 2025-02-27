@@ -50,10 +50,9 @@ const UserButton = async () => {
               </div>
             </div>
           </DropdownMenuLabel>
-
           <DropdownMenuItem>
             <Link href="/user/profile" className="w-full">
-              User Profile
+              Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
