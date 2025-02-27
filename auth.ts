@@ -84,12 +84,16 @@ export const config = {
               await prisma.cart.update({
                 where: { id: sessionCart.id },
                 data: { userId: user.id },
-              })
+              });
             }
           }
         }
       }
-      //
+
+      if (session?.user.name && trigger === 'update') {
+        token.name = session.user.name;
+      }
+
       return token;
     },
     authorized({ request, auth }: any) {
@@ -101,10 +105,11 @@ export const config = {
         /\/user\/(.*)/,
         /\/order/,
         /\/admin/,
-      ]
+      ];
 
-      const {pathname} = request.nextUrl
-      if (!auth && protectedPaths.some((path)=> path.test(pathname))) return false
+      const { pathname } = request.nextUrl;
+      if (!auth && protectedPaths.some((path) => path.test(pathname)))
+        return false;
 
       if (!request.cookies.get('sessionCartId')) {
         const sessionCartId = crypto.randomUUID();
