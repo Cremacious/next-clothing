@@ -12,6 +12,7 @@ import { getOrderSummary } from '@/lib/actions/order.actions';
 import { formatCurrency, formatDateTime, formatNumber } from '@/lib/utils';
 import { BadgeDollarSign, Barcode, CreditCard, Users } from 'lucide-react';
 import Link from 'next/link';
+import Charts from './charts'
 
 export const metadata = {
   title: 'Admin Dashboard',
@@ -29,7 +30,7 @@ const AdminOverviewPage = async () => {
   return (
     <div className="space-y-2">
       <h1 className="font-bold">Dashboard</h1>
-      <div className="grid md:grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -82,7 +83,11 @@ const AdminOverviewPage = async () => {
           <CardHeader>
             <CardTitle>Overview</CardTitle>
           </CardHeader>
-          <CardContent>{/* Chart here */}</CardContent>
+          <CardContent>
+            <Charts data={{
+              salesData: summary.salesData
+            }} />
+          </CardContent>
         </Card>
         <Card className="col-span-3">
           <CardHeader>
