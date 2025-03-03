@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
 import { Order } from '@/types';
 import Link from 'next/link';
@@ -22,15 +23,20 @@ import {
 import {
   createPayPalOrder,
   approvePayPalOrder,
+  updateOrderToPaidCOD,
+  deliverOrder,
 } from '@/lib/actions/order.actions';
 import { useToast } from '@/hooks/use-toast';
+import { useTransition } from 'react';
 
 const OrderDetailsTable = ({
   order,
   paypalClientId,
+  isAdmin,
 }: {
   order: Order;
   paypalClientId: string;
+  isAdmin: boolean;
 }) => {
   const {
     id,
@@ -70,22 +76,64 @@ const OrderDetailsTable = ({
     return res.data;
   };
 
-  const handleApprovePaypalOrder = async (data: {orderId: string}) => {
+  const handleApprovePaypalOrder = async (data: { orderId: string }) => {
     const res = await approvePayPalOrder(order.id, data);
     toast({
       variant: res.success ? 'default' : 'destructive',
-      description: res.message
-    })
-  }
+      description: res.message,
+    });
+  };
+
+  const MarkAsPaidButton = () => {
+    const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await updateOrderToPaidCOD(id);
+            toast({
+              variant: res.success ? 'default' : 'destructive',
+              description: res.message,
+            });
+          })
+        }
+      >
+        {isPending ? 'Processing...' : 'Mark As Paid'}
+      </Button>
+    );
+  };
+
+  const MarkAsDeliveredButton = () => {const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await deliverOrder(id);
+            toast({
+              variant: res.success ? 'default' : 'destructive',
+              description: res.message,
+            });
+          })
+        }
+      >
+        {isPending ? 'Processing...' : 'Mark As Delivered'}
+      </Button>
+    );};
 
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
       <div className="grid md:grid-cols-3 md:gap-5">
-        <div className="md:col-span-2 overflow-x-auto space-y-4">
+        <div className="space-y-4 overflow-x-auto md:col-span-2">
           <Card>
-            <CardContent className="p-4 gap-4">
-              <h2 className="text-xl pb-4">Payment Method</h2>
+            <CardContent className="gap-4 p-4">
+              <h2 className="pb-4 text-xl">Payment Method</h2>
               <p className="mb-2">{paymentMethod}</p>
               {isPaid ? (
                 <Badge variant="secondary">
@@ -97,8 +145,8 @@ const OrderDetailsTable = ({
             </CardContent>
           </Card>
           <Card className="my-2">
-            <CardContent className="p-4 gap-4">
-              <h2 className="text-xl pb-4">Shipping Address</h2>
+            <CardContent className="gap-4 p-4">
+              <h2 className="pb-4 text-xl">Shipping Address</h2>
               <p className="mb-2">{shippingAddress.fullName}</p>
               <p>
                 {shippingAddress.streetAddress}, {shippingAddress.city}
@@ -114,8 +162,8 @@ const OrderDetailsTable = ({
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4 gap-4">
-              <h2 className="text-xl pb-4">Order Items</h2>
+            <CardContent className="gap-4 p-4">
+              <h2 className="pb-4 text-xl">Order Items</h2>
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -156,7 +204,7 @@ const OrderDetailsTable = ({
         </div>
         <div>
           <Card>
-            <CardContent className="p-4 gap-4 space-y-4">
+            <CardContent className="gap-4 space-y-4 p-4">
               <div className="flex justify-between">
                 <div>Items</div>
                 <div>{formatCurrency(itemsPrice)}</div>
@@ -185,6 +233,10 @@ const OrderDetailsTable = ({
                 </div>
               )}
             </CardContent>
+            {isAdmin && !isPaid && paymentMethod === 'CashOnDelivery' && (
+              <MarkAsPaidButton />
+            )}
+            {isAdmin && isPaid && !isDelivered && <MarkAsDeliveredButton />}
           </Card>
         </div>
       </div>
