@@ -26,7 +26,7 @@ export async function getProductBySlug(slug: string) {
 
 export async function getAllProducts({
   query,
-  limit = PAGE_SIZE,
+  limit = 10,
   page,
   category,
 }: {
@@ -36,9 +36,11 @@ export async function getAllProducts({
   category?: string;
 }) {
   const data = await prisma.product.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
     skip: (page - 1) * limit,
     take: limit,
-    where: {},
   });
   const dataCount = await prisma.product.count();
   return { data, totalPages: Math.ceil(dataCount / limit) };
