@@ -19,8 +19,8 @@ export const insertProductSchema = z.object({
   description: z.string().min(3, 'Description must be three characters long.'),
   stock: z.coerce.number(),
   images: z.array(z.string().min(1, 'At least one image is required')),
-  // isFeatured: z.boolean(),
-  // banner: z.string().nullable(),
+  isFeatured: z.boolean(),
+  banner: z.string().nullable(),
   price: currency,
 });
 
@@ -121,4 +121,8 @@ export const updateProfileSchema = z.object({
   email: z.string().min(3, 'Name must be at least 3 characters'),
 });
 
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, 'User ID is required'),
+  role: z.string().min(1, 'Role is required'),
+})
 
