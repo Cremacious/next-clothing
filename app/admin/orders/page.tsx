@@ -20,9 +20,9 @@ export const metadata = {
 };
 
 const AdminOrdersPage = async (props: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; query: string }>;
 }) => {
-  const { page = '1' } = await props.searchParams;
+  const { page = '1', query: searchText } = await props.searchParams;
   const session = await auth();
   if (session?.user?.role !== 'admin')
     throw new Error('User is not authorized');
@@ -31,19 +31,33 @@ const AdminOrdersPage = async (props: {
 
   const orders = await getAllOrders({
     page: Number(page),
+    query: searchText,
     limit: 10,
   });
 
   return (
     <>
       <div className="space-y-2">
-        <h2 className="font-bold">Orders</h2>
+        <div className="flex items-center gap-3">
+          <h1 className="font-bold">Orders</h1>
+          {searchText && (
+            <div>
+              Filtered By: <i>{searchText}</i>
+              <Link href="/admin/orders">
+                <Button className="ml-2" variant="outline" size="sm">
+                  Remove Filter
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Order ID</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Buyer</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Paid</TableHead>
                 <TableHead>Delivered</TableHead>
@@ -57,6 +71,7 @@ const AdminOrdersPage = async (props: {
                   <TableCell>
                     {formatDateTime(order.createdAt).dateTime}
                   </TableCell>
+                  <TableCell>{order.user.name}</TableCell>
                   <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                   <TableCell>
                     {order.isPaid && order.paidAt
