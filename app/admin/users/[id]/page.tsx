@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getUserById } from '@/lib/actions/user.actions';
+import UpdateUserForm from './update-user-form';
 
 export const metadata = {
   title: 'Update User',
@@ -16,7 +17,8 @@ const AdminUserUpdatePage = async (props: {
 
   return (
     <div className="mx-auto max-w-lg space-y-8">
-      <h1 className="font-bold">Update User</h1>
+      <h1 className="font-bold">Update Users</h1>
+      <UpdateUserForm user={user} />
     </div>
   );
 };
