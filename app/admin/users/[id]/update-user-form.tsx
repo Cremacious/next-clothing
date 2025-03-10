@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-// import { updateUser } from '@/lib/actions/user.actions';
+import { updateUser } from '@/lib/actions/user.actions';
 import { USER_ROLES } from '@/lib/constants';
 import { updateUserSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,31 +40,30 @@ const UpdateUserForm = ({
   });
 
   const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
-    return
-    // try {
-    //   const res = await updateUser({
-    //     ...values,
-    //     id: user.id,
-    //   });
+    try {
+      const res = await updateUser({
+        ...values,
+        id: user.id,
+      });
 
-    //   if (!res.success) {
-    //     return toast({
-    //       variant: 'destructive',
-    //       description: res.message,
-    //     });
-    //   }
+      if (!res.success) {
+        return toast({
+          variant: 'destructive',
+          description: res.message,
+        });
+      }
 
-    //   toast({
-    //     description: res.message,
-    //   });
-    //   form.reset();
-    //   router.push('/admin/users');
-    // } catch (error) {
-    //   toast({
-    //     variant: 'destructive',
-    //     description: (error as Error).message,
-    //   });
-    // }
+      toast({
+        description: res.message,
+      });
+      form.reset();
+      router.push('/admin/users');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        description: (error as Error).message,
+      });
+    }
   };
 
   return (
