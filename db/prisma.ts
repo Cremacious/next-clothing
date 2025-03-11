@@ -30,33 +30,25 @@ export const prisma = new PrismaClient({ adapter }).$extends({
     },
     cart: {
       itemsPrice: {
-        needs: {
-          itemsPrice: true,
-        },
+        needs: { itemsPrice: true },
         compute(cart) {
           return cart.itemsPrice.toString();
         },
       },
       shippingPrice: {
-        needs: {
-          shippingPrice: true,
-        },
+        needs: { shippingPrice: true },
         compute(cart) {
           return cart.shippingPrice.toString();
         },
       },
       taxPrice: {
-        needs: {
-          taxPrice: true,
-        },
+        needs: { taxPrice: true },
         compute(cart) {
           return cart.taxPrice.toString();
         },
       },
       totalPrice: {
-        needs: {
-          totalPrice: true,
-        },
+        needs: { totalPrice: true },
         compute(cart) {
           return cart.totalPrice.toString();
         },
@@ -64,33 +56,25 @@ export const prisma = new PrismaClient({ adapter }).$extends({
     },
     order: {
       itemsPrice: {
-        needs: {
-          itemsPrice: true,
-        },
+        needs: { itemsPrice: true },
         compute(cart) {
           return cart.itemsPrice.toString();
         },
       },
       shippingPrice: {
-        needs: {
-          shippingPrice: true,
-        },
+        needs: { shippingPrice: true },
         compute(cart) {
           return cart.shippingPrice.toString();
         },
       },
       taxPrice: {
-        needs: {
-          taxPrice: true,
-        },
+        needs: { taxPrice: true },
         compute(cart) {
           return cart.taxPrice.toString();
         },
       },
       totalPrice: {
-        needs: {
-          totalPrice: true,
-        },
+        needs: { totalPrice: true },
         compute(cart) {
           return cart.totalPrice.toString();
         },
@@ -99,9 +83,9 @@ export const prisma = new PrismaClient({ adapter }).$extends({
     orderItem: {
       price: {
         compute(cart) {
-          return cart.price.toString()
-        }
-      }
-    }
+          return cart.price.toString();
+        },
+      },
+    },
   },
 });
