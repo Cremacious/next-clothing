@@ -29,3 +29,11 @@ export const productDefaultValues = {
 export const USER_ROLES = process.env.USER_ROLES
   ? process.env.USER_ROLES.split(', ')
   : ['user', 'admin'];
+
+export const reviewFormDefaultValues = {
+  title: '',
+  comment: '',
+  rating: 0,
+};
+
+export const SENDER_EMAIL = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
