@@ -6,12 +6,17 @@ import ProductPrice from '@/components/shared/product/product-price';
 import ProductImages from '@/components/shared/product/product-images';
 import AddToCart from '@/components/shared/product/add-to-cart';
 import { getMyCart } from '@/lib/actions/cart.actions';
+import ReviewList from './review-list';
+import { auth } from '@/auth';
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await props.params;
   const product = await getProductBySlug(slug);
+  const session = await auth();
+  const userId = session?.user?.id;
+
   if (!product) {
     return <PageNotFound />;
   }
@@ -35,7 +40,7 @@ const ProductDetailsPage = async (props: {
               </p>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <ProductPrice
-                  className="w-24 rounded-full bg-green-100 text-green-700 px-5 py-2"
+                  className="w-24 rounded-full bg-green-100 px-5 py-2 text-green-700"
                   value={Number(product.price)}
                 />
               </div>
@@ -81,6 +86,14 @@ const ProductDetailsPage = async (props: {
             </Card>
           </div>
         </div>
+      </section>
+      <section className="mt-10">
+        <h2 className="font-bold">Customer Reviews</h2>
+        <ReviewList
+          userId={userId || ''}
+          productId={product.id}
+          productSlug={product.slug}
+        />
       </section>
     </>
   );
